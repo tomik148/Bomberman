@@ -60,10 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\RuleTile\Animated Tile\Scripts\AnimatedTile.cs" />
     <Compile Include="Assets\RuleTile\RuleTile.cs" />
     <Compile Include="Assets\Scripts\ChangeScean.cs" />
     <Compile Include="Assets\Scripts\controler.cs" />
     <Compile Include="Assets\Scripts\Exit.cs" />
+    <Compile Include="Assets\Scripts\Kill.cs" />
     <Compile Include="Assets\Scripts\PlayerContorler.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
