@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,17 +15,22 @@ public class controler : MonoBehaviour {
     public Tilemap fireTilemap;
     public TileBase bombTile;
     public TileBase fireTile;
+    public AudioSource audioSource;
 
     public float speed = 10;
     public int BombSize = 2;
     public int BombFuzeTime = 2;
 
-    bool godmod = false;
+    public bool godmod = false;
+
+    public event Action<Vector3Int,int> OnBombPlaced;
+    public event Action<Vector3Int,int> OnBombExpoded;
 
     // Use this for initialization
     void Start () {
-		
-	}
+        audioSource.enabled = sound.IsSoundOn;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -48,13 +54,19 @@ public class controler : MonoBehaviour {
 
     public void PlantBomb()
     {
-        StartCoroutine("PlantBombInternal");
+        PlantBomb(tilemap.WorldToCell(transform.position));
     }
 
-    private IEnumerator PlantBombInternal()
+    public void PlantBomb(Vector3Int pos)
     {
-        Vector3Int pos = tilemap.WorldToCell(transform.position);
+        StartCoroutine("PlantBombInternal", pos);
+    }
+
+    private IEnumerator PlantBombInternal(Vector3Int pos)
+    {
+        //Vector3Int pos = tilemap.WorldToCell(transform.position);
         tilemap.SetTile(pos, bombTile);
+        OnBombPlaced?.Invoke(pos,BombSize);
         float normalizedTime = 0;
         while (normalizedTime <= 1f)
         {
@@ -69,10 +81,16 @@ public class controler : MonoBehaviour {
         StartCoroutine(ExplodeBomb(pos, BombSize));
     }
 
+    public Vector3Int getPos()
+    {
+        return tilemap.WorldToCell(transform.position);
+    }
+
     public IEnumerator ExplodeBomb(Vector3Int pos, int size)
     {
         fireTilemap.SetTile(pos, fireTile);
         tilemap.SetTile(pos, null);
+        
         int a = 1;
         List<Vector3Int> firePos = new List<Vector3Int>();
         firePos.Add(pos);
@@ -191,8 +209,9 @@ public class controler : MonoBehaviour {
             }
             a++;
         }
+        audioSource.Play();
         float normalizedTime = 0;
-        while (normalizedTime <= 1f)
+        while (normalizedTime <= .5f)
         {
             normalizedTime += Time.deltaTime / BombFuzeTime;
             yield return null;
@@ -202,6 +221,7 @@ public class controler : MonoBehaviour {
         {
             fireTilemap.SetTile(fpos, null);
         }
+        OnBombExpoded?.Invoke(pos, size);
     }
 
     public void Die()

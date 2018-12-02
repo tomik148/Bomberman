@@ -22,6 +22,7 @@ namespace UnityEngine.Tilemaps
 		{
 			tileData.transform = Matrix4x4.identity;
 			tileData.color = Color.white;
+            tileData.colliderType = Tile.ColliderType.None;
 			if (m_AnimatedSprites != null && m_AnimatedSprites.Length > 0)
 			{
 				tileData.sprite = m_AnimatedSprites[m_AnimatedSprites.Length - 1];
