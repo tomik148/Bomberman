@@ -20,7 +20,7 @@ public class controler : MonoBehaviour {
     public float speed = 10;
     public int BombSize = 2;
     public int BombFuzeTime = 2;
-
+    
     public bool godmod = false;
 
     public event Action<Vector3Int,int> OnBombPlaced;
@@ -54,16 +54,17 @@ public class controler : MonoBehaviour {
 
     public void PlantBomb()
     {
-        PlantBomb(tilemap.WorldToCell(transform.position));
+        PlantBomb(getPos());
     }
 
     public void PlantBomb(Vector3Int pos)
     {
-        StartCoroutine("PlantBombInternal", pos);
+        StartCoroutine(PlantBombInternal(pos));
     }
 
     private IEnumerator PlantBombInternal(Vector3Int pos)
     {
+        bool isPlayer = pos == getPos();
         //Vector3Int pos = tilemap.WorldToCell(transform.position);
         tilemap.SetTile(pos, bombTile);
         OnBombPlaced?.Invoke(pos,BombSize);
@@ -109,6 +110,7 @@ public class controler : MonoBehaviour {
                 case "Wall":
                     fireTilemap.SetTile(check, fireTile);
                     tilemap.SetTile(check, null);
+                    score.AktualScore += 10;
                     firePos.Add(new Vector3Int(check.x,check.y,check.z));
                     a = size;
                     break;
@@ -138,6 +140,7 @@ public class controler : MonoBehaviour {
                 case "Wall":
                     fireTilemap.SetTile(check, fireTile);
                     tilemap.SetTile(check, null);
+                    score.AktualScore += 10;
                     firePos.Add(new Vector3Int(check.x, check.y, check.z));
                     a = size;
                     break;
@@ -167,6 +170,7 @@ public class controler : MonoBehaviour {
                 case "Wall":
                     fireTilemap.SetTile(check, fireTile);
                     tilemap.SetTile(check, null);
+                    score.AktualScore += 10;
                     firePos.Add(new Vector3Int(check.x, check.y, check.z));
                     a = size;
                     break;
@@ -196,6 +200,7 @@ public class controler : MonoBehaviour {
                 case "Wall":
                     fireTilemap.SetTile(check, fireTile);
                     tilemap.SetTile(check, null);
+                    score.AktualScore += 10;
                     firePos.Add(new Vector3Int(check.x, check.y, check.z));
                     a = size;
                     break;
@@ -211,7 +216,7 @@ public class controler : MonoBehaviour {
         }
         audioSource.Play();
         float normalizedTime = 0;
-        while (normalizedTime <= .5f)
+        while (normalizedTime <= .2f)
         {
             normalizedTime += Time.deltaTime / BombFuzeTime;
             yield return null;
@@ -230,7 +235,7 @@ public class controler : MonoBehaviour {
         {
             return;
         }
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("Score");
     }
 
     

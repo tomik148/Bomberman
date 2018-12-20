@@ -8,7 +8,7 @@ using System;
 public class AI : MonoBehaviour {
 
     public Tilemap wallsMap;
-    public Tilemap fireMap;
+    public Tilemap floorMap;
     public controler player;
     public Rigidbody2D rb;
 
@@ -24,6 +24,8 @@ public class AI : MonoBehaviour {
     private int bomb_counter = 0;
     private System.Random random = new System.Random();
 
+    public bool doStaff = false;
+
     // Use this for initialization
     void Start() {
         player.OnBombPlaced += (pos, pow) => notSafeMoves.AddRange(getBombedTiles(pos, pow));
@@ -34,12 +36,17 @@ public class AI : MonoBehaviour {
                 notSafeMoves.Remove(item);
             }
         };
-        
     }
+
 
 
     // Update is called once per frame
     void Update() {
+        if (!doStaff)
+        {
+            return;
+        }
+
         if (moving)
         {
             StartCoroutine(MoveTo());
@@ -97,12 +104,13 @@ public class AI : MonoBehaviour {
             }
             else
             {
-                //Move randomly
-                for (int i = 0; i < 4; ++i)
+                //Move randomly//TODO!!!!
+                var n = getWalkableNeighbors(getPos());
+                for (int i = 0; i < n.Length; ++i)
                 {
-                    move = getNeighbors(getPos())[i];
-                    if (isWalkable(move.Value) && moveSafe(move))
+                    if (moveSafe(n[i]))
                     {
+                        move = n[i];
                         break;
                     }
                 }
@@ -136,7 +144,7 @@ public class AI : MonoBehaviour {
                 good_place = true;
         }
         // always place a bomb if an enemy is nearby, or on a random chance
-        if (isEnemyInRange(getPos()) || random.Next(5) == 0) good_place = true;
+        if (isEnemyInRange(getPos()) || random.Next(10) == 0) good_place = true;
         if (!good_place) return false;
         foreach (var t in movetiles)
         {

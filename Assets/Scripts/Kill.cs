@@ -14,6 +14,7 @@ public class Kill : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.name);
         var c = collision.gameObject.GetComponent<controler>();
         if (c != null)
         {

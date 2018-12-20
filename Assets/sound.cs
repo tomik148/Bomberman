@@ -27,8 +27,15 @@ public class sound : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        if (IsSoundOn)
+        {
+            i.sprite = on;
+        }
+        else
+        {
+            i.sprite = off;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

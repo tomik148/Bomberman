@@ -60,8 +60,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\choose.cs" />
+    <Compile Include="Assets\LevelMaker.cs" />
     <Compile Include="Assets\RuleTile\Animated Tile\Scripts\AnimatedTile.cs" />
     <Compile Include="Assets\RuleTile\RuleTile.cs" />
+    <Compile Include="Assets\saveScore.cs" />
+    <Compile Include="Assets\score.cs" />
     <Compile Include="Assets\Scripts\AI.cs" />
     <Compile Include="Assets\Scripts\ChangeScean.cs" />
     <Compile Include="Assets\Scripts\controler.cs" />
@@ -70,6 +74,7 @@
     <Compile Include="Assets\Scripts\Kill.cs" />
     <Compile Include="Assets\Scripts\PlayerContorler.cs" />
     <Compile Include="Assets\sound.cs" />
+    <Compile Include="Assets\updateScore.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
